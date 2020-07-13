@@ -23,21 +23,32 @@ const API = "https://yts.mx/api/v2/list_movies.json";
         </h4>
         </div>`;
   }
-
-const $actionContainer = document.getElementById("action");
-  actionList.data.movies.forEach((movie) => {
-    const HTMLString = videoItemTemplate(movie);
+  function createTemplate(HTMLString) {
     const html = document.implementation.createHTMLDocument();
     html.body.innerHTML = HTMLString;
+    return html.body.children[0];
+  }
+  function renderMoviesList(list, $container) {
+    $container.children[0].remove(); //Eliminar img carga
+    list.forEach((movie) => {
+      const HTMLString = videoItemTemplate(movie);
+      const movieElement = createTemplate(HTMLString);
+      $container.append(movieElement);
+    });
+  }
 
-    $actionContainer.append(html.body.children[0])
-    console.log(HTMLString);
-  });
 
+  const $actionContainer = document.getElementById("action");
+  renderMoviesList(actionList.data.movies, $actionContainer)
 
   const $dramaContainer = document.getElementById("drama");
-  const $animationContainer = document.getElementById("animation");
+  renderMoviesList(dramaList.data.movies, $dramaContainer)
 
+  const $animationContainer = document.getElementById("animation");
+  renderMoviesList(animationList.data.movies, $animationContainer)
+
+
+  
   const $modal = document.getElementById("modal");
   const $overlay = document.getElementById("overlay");
   const $hideModal = document.getElementById("hide-modal");
