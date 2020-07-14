@@ -1,23 +1,26 @@
+//Api de peliculas
 const API = "https://yts.mx/api/v2/list_movies.json";
 (async function load() {
-  console.log("Buscando peliculas...");
-  
+  //Funcion asincrona para llamar peliculas del API
   async function getData(genero) {
     const result = await fetch(API + "?genre=" + genero);
     return await result.json();
   }
+  //Guardadno constante de generos de peliculas
   const actionList = await getData("action");
   const dramaList = await getData("drama");
   const animationList = await getData("animation");
-  
+
   //Search movies
   const $form = document.getElementById("form");
-  $form.addEventListener('submit', (event) => {
-    event.preventDefault()
-    console.log(event);
+  const $home = document.getElementById("home");
+  $form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    $home.classList.add("search-active");
+    //console.log(event);
   });
-  //console.log(actionList, dramaList, animationList);
 
+  // Template de las peliculas
   function videoItemTemplate(movie) {
     return `<div class="primaryPlaylistItem">
         <div class="primaryPlaylistItem-image">
@@ -28,18 +31,19 @@ const API = "https://yts.mx/api/v2/list_movies.json";
         </h4>
         </div>`;
   }
-
+  //creador de template de las pelcuculas
   function createTemplate(HTMLString) {
     const html = document.implementation.createHTMLDocument();
     html.body.innerHTML = HTMLString;
     return html.body.children[0];
   }
-  function addEventClick($element){
-    $element.addEventListener('click', () => {
-      alert('Click')
-    })
+  //anadir eventos al hacer click a la pelicula
+  function addEventClick($element) {
+    $element.addEventListener("click", () => {
+      showModal() //Mostrar overlay
+    });
   }
-
+  //renderizado de las peliculas
   function renderMoviesList(listaPeliculas, $container) {
     $container.children[0].remove(); //Eliminar img carga
     listaPeliculas.forEach((movie) => {
@@ -64,9 +68,20 @@ const API = "https://yts.mx/api/v2/list_movies.json";
   const $hideModal = document.getElementById("hide-modal");
 
   const $featuringContainer = document.getElementById("featuring");
-  const $home = document.getElementById("home");
+  
 
   const $modalImage = modal.querySelector("img");
   const $modalTitle = modal.querySelector("h1");
   const $modalDescription = modal.querySelector("p");
+
+  function showModal() {
+    $overlay.classList.add('active');
+    $modal.style.animation = 'modalIn .8s forwards';
+  }
+  $hideModal.addEventListener('click', hideModal);
+  function hideModal() {
+    $overlay.classList.remove('active');
+    $modal.style.animation = 'modalOut .8s forwards';
+  }
+
 })();
