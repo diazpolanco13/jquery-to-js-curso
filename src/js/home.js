@@ -14,10 +14,25 @@ const API = "https://yts.mx/api/v2/list_movies.json";
   //Search movies
   const $form = document.getElementById("form");
   const $home = document.getElementById("home");
+  const $featuringContainer = document.getElementById("featuring");
+
+  //
+  function setAttributes($element, attributes) {
+    for (const attribute in attributes) {
+      $element.setAttribute(attribute, attributes[attribute]);
+    }
+  }
+
   $form.addEventListener("submit", (event) => {
     event.preventDefault();
     $home.classList.add("search-active");
-    //console.log(event);
+    const $loader = document.createElement("img");
+    setAttributes($loader, {
+      src: "src/images/loader.gif",
+      height: 50,
+      width: 50,
+    });
+    $featuringContainer.append($loader);
   });
 
   // Template de las peliculas
@@ -40,7 +55,7 @@ const API = "https://yts.mx/api/v2/list_movies.json";
   //anadir eventos al hacer click a la pelicula
   function addEventClick($element) {
     $element.addEventListener("click", () => {
-      showModal() //Mostrar overlay
+      showModal(); //Mostrar overlay
     });
   }
   //renderizado de las peliculas
@@ -67,21 +82,17 @@ const API = "https://yts.mx/api/v2/list_movies.json";
   const $overlay = document.getElementById("overlay");
   const $hideModal = document.getElementById("hide-modal");
 
-  const $featuringContainer = document.getElementById("featuring");
-  
-
   const $modalImage = modal.querySelector("img");
   const $modalTitle = modal.querySelector("h1");
   const $modalDescription = modal.querySelector("p");
 
   function showModal() {
-    $overlay.classList.add('active');
-    $modal.style.animation = 'modalIn .8s forwards';
+    $overlay.classList.add("active");
+    $modal.style.animation = "modalIn .8s forwards";
   }
-  $hideModal.addEventListener('click', hideModal);
+  $hideModal.addEventListener("click", hideModal);
   function hideModal() {
-    $overlay.classList.remove('active');
-    $modal.style.animation = 'modalOut .8s forwards';
+    $overlay.classList.remove("active");
+    $modal.style.animation = "modalOut .8s forwards";
   }
-
 })();
