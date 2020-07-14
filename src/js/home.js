@@ -1,7 +1,12 @@
 //Api de peliculas
 const API = "https://yts.mx/api/v2/list_movies.json";
 (async function load() {
+<<<<<<< HEAD
   //Funcion asincrona para llamar peliculas del API
+=======
+  console.log("Buscando peliculas...");
+  
+>>>>>>> 6550657e9308068b314d2416d14dac6615f64a57
   async function getData(genero) {
     const result = await fetch(API + "?genre=" + genero);
     return await result.json();
@@ -10,6 +15,7 @@ const API = "https://yts.mx/api/v2/list_movies.json";
   const actionList = await getData("action");
   const dramaList = await getData("drama");
   const animationList = await getData("animation");
+<<<<<<< HEAD
 
   //Search movies
   const $form = document.getElementById("form");
@@ -22,6 +28,16 @@ const API = "https://yts.mx/api/v2/list_movies.json";
       $element.setAttribute(attribute, attributes[attribute]);
     }
   }
+=======
+  
+  //Search movies
+  const $form = document.getElementById("form");
+  $form.addEventListener('submit', (event) => {
+    event.preventDefault()
+    console.log(event);
+  });
+  //console.log(actionList, dramaList, animationList);
+>>>>>>> 6550657e9308068b314d2416d14dac6615f64a57
 
   $form.addEventListener("submit", (event) => {
     event.preventDefault();
@@ -46,12 +62,17 @@ const API = "https://yts.mx/api/v2/list_movies.json";
         </h4>
         </div>`;
   }
+<<<<<<< HEAD
   //creador de template de las pelcuculas
+=======
+
+>>>>>>> 6550657e9308068b314d2416d14dac6615f64a57
   function createTemplate(HTMLString) {
     const html = document.implementation.createHTMLDocument();
     html.body.innerHTML = HTMLString;
     return html.body.children[0];
   }
+<<<<<<< HEAD
   //anadir eventos al hacer click a la pelicula
   function addEventClick($element) {
     $element.addEventListener("click", () => {
@@ -59,6 +80,14 @@ const API = "https://yts.mx/api/v2/list_movies.json";
     });
   }
   //renderizado de las peliculas
+=======
+  function addEventClick($element){
+    $element.addEventListener('click', () => {
+      alert('Click')
+    })
+  }
+
+>>>>>>> 6550657e9308068b314d2416d14dac6615f64a57
   function renderMoviesList(listaPeliculas, $container) {
     $container.children[0].remove(); //Eliminar img carga
     listaPeliculas.forEach((movie) => {
@@ -82,6 +111,7 @@ const API = "https://yts.mx/api/v2/list_movies.json";
   const $overlay = document.getElementById("overlay");
   const $hideModal = document.getElementById("hide-modal");
 
+<<<<<<< HEAD
   const $modalImage = modal.querySelector("img");
   const $modalTitle = modal.querySelector("h1");
   const $modalDescription = modal.querySelector("p");
@@ -95,4 +125,12 @@ const API = "https://yts.mx/api/v2/list_movies.json";
     $overlay.classList.remove("active");
     $modal.style.animation = "modalOut .8s forwards";
   }
+=======
+  const $featuringContainer = document.getElementById("featuring");
+  const $home = document.getElementById("home");
+
+  const $modalImage = modal.querySelector("img");
+  const $modalTitle = modal.querySelector("h1");
+  const $modalDescription = modal.querySelector("p");
+>>>>>>> 6550657e9308068b314d2416d14dac6615f64a57
 })();
