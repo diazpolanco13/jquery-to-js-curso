@@ -61,8 +61,8 @@ const BASE_API = "https://yts.mx/api/v2/";
   });
 
   // Template de las peliculas
-  function videoItemTemplate(movie) {
-    return `<div class="primaryPlaylistItem">
+  function videoItemTemplate(movie, category) {
+    return `<div class="primaryPlaylistItem" data-id="${movie.id}" data-category="${category}">
         <div class="primaryPlaylistItem-image">
         <img src="${movie.medium_cover_image}">
         </div>
@@ -80,14 +80,14 @@ const BASE_API = "https://yts.mx/api/v2/";
   //anadir eventos al hacer click a la pelicula
   function addEventClick($element) {
     $element.addEventListener("click", () => {
-      showModal(); //Mostrar overlay
+      showModal($element); //Mostrar overlay
     });
   }
   //renderizado de las peliculas
-  function renderMoviesList(listaPeliculas, $container) {
+  function renderMoviesList(listaPeliculas, $container, category) {
     $container.children[0].remove(); //Eliminar img carga
     listaPeliculas.forEach((movie) => {
-      const HTMLString = videoItemTemplate(movie);
+      const HTMLString = videoItemTemplate(movie, category);
       const movieElement = createTemplate(HTMLString);
       $container.append(movieElement);
       addEventClick(movieElement);
@@ -95,13 +95,13 @@ const BASE_API = "https://yts.mx/api/v2/";
   }
 
   const $actionContainer = document.getElementById("action");
-  renderMoviesList(actionList.data.movies, $actionContainer);
+  renderMoviesList(actionList.data.movies, $actionContainer, 'action');
 
   const $dramaContainer = document.getElementById("drama");
-  renderMoviesList(dramaList.data.movies, $dramaContainer);
+  renderMoviesList(dramaList.data.movies, $dramaContainer, 'drama');
 
   const $animationContainer = document.getElementById("animation");
-  renderMoviesList(animationList.data.movies, $animationContainer);
+  renderMoviesList(animationList.data.movies, $animationContainer, 'animation');
 
   const $modal = document.getElementById("modal");
   const $overlay = document.getElementById("overlay");
@@ -111,7 +111,7 @@ const BASE_API = "https://yts.mx/api/v2/";
   const $modalTitle = modal.querySelector("h1");
   const $modalDescription = modal.querySelector("p");
 
-  function showModal() {
+  function showModal($element) {
     $overlay.classList.add("active");
     $modal.style.animation = "modalIn .8s forwards";
   }
