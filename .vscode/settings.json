@@ -6,5 +6,6 @@
         "lista",
         "lista peliculas",
         "peliculas"
-    ]
+    ],
+    "editor.fontFamily": "'Fira Code', 'Droid Sans Mono', 'Courier New'"
 }

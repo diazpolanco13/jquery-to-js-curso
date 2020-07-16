@@ -5,8 +5,12 @@ const BASE_API = "https://yts.mx/api/v2/";
 (async function load() {
   //Funcion asincrona para llamar peliculas del API
   async function getData(url) {
-    const result = await fetch(url);
-    return await result.json();
+    const response = await fetch(url);
+    const data = await response.json();
+    if (data.data.movie_count > 0){
+      return data;
+    }
+    throw new Error('No se encontro ningun resultado');
   }
   //Search movies
   const $form = document.getElementById("form");
@@ -45,13 +49,19 @@ const BASE_API = "https://yts.mx/api/v2/";
 
     //parsear Formulario
     const data = new FormData($form);
-    const {
-      data: { movies: pelis },
-    } = await getData(
-      `${BASE_API}list_movies.json?limit=1&query_term=${data.get("name")}`
-    );
-    const HTMLString = featuringTemplate(pelis[0]);
-    $featuringContainer.innerHTML = HTMLString;
+      try {
+        const {
+          data: { movies: pelis },
+        } = await getData(
+          `${BASE_API}list_movies.json?limit=1&query_term=${data.get("name")}`
+        );
+        const HTMLString = featuringTemplate(pelis[0]);
+        $featuringContainer.innerHTML = HTMLString;
+      } catch (error) {
+        alert(error.message);
+        $loader.remove();
+        $home.classList.remove('search-active')
+      }
   });
 
   // Template de las peliculas
@@ -63,7 +73,7 @@ const BASE_API = "https://yts.mx/api/v2/";
         <h4 class="primaryPlaylistItem-title">
         ${movie.title}
         </h4>
-        </div>`;
+        </div>`; 
   }
   //creador de template de las pelcuculas
   function createTemplate(HTMLString) {
@@ -77,7 +87,7 @@ const BASE_API = "https://yts.mx/api/v2/";
       showModal($element); //Mostrar overlay
     });
   }
-  //renderizado de las peliculas
+  //Renderizado de las peliculas
   function renderMoviesList(listaPeliculas, $container, category) {
     $container.children[0].remove(); //Eliminar img carga
     listaPeliculas.forEach((movie) => {
@@ -94,8 +104,6 @@ const BASE_API = "https://yts.mx/api/v2/";
   }
 
 
-  
-  
   const { data: { movies: actionList } } = await getData(`${BASE_API}list_movies.json?genre=action`);
   const $actionContainer = document.getElementById("action");
   renderMoviesList(actionList, $actionContainer, "action");
@@ -107,7 +115,7 @@ const BASE_API = "https://yts.mx/api/v2/";
   const { data: { movies: animationList } } = await getData(`${BASE_API}list_movies.json?genre=animation`);
   const $animationContainer = document.getElementById("animation");
   renderMoviesList(animationList, $animationContainer, "animation");
-
+  
 
   const $modal = document.getElementById("modal");
   const $overlay = document.getElementById("overlay");
