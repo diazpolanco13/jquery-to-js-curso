@@ -26,8 +26,6 @@ const BASE_API = "https://yts.mx/api/v2/";
     }
   }
   
-  
-  
   function featuringTemplate(peli) {
     return `<div class="featuring">
     <div class="featuring-image">
@@ -52,10 +50,14 @@ const BASE_API = "https://yts.mx/api/v2/";
 
     //parsear Formulario
     const data = new FormData($form);
-    const peli = await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
-    const HTMLString = featuringTemplate(peli.data.movies[0]);
+    const {
+      data: {
+        movies: pelis
+      }
+    } = await getData(`${BASE_API}list_movies.json?limit=1&query_term=${data.get('name')}`);
+    const HTMLString = featuringTemplate(pelis[0]);
     $featuringContainer.innerHTML = HTMLString;
-    debugger;
+
   });
 
   // Template de las peliculas
