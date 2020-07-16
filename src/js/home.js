@@ -8,17 +8,6 @@ const BASE_API = "https://yts.mx/api/v2/";
     const result = await fetch(url);
     return await result.json();
   }
-  //Guardadno constante de generos de peliculas
-  const {
-    data: { movies: actionList },
-  } = await getData(`${BASE_API}list_movies.json?genre=action`);
-  const {
-    data: { movies: dramaList },
-  } = await getData(`${BASE_API}list_movies.json?genre=drama`);
-  const {
-    data: { movies: animationList },
-  } = await getData(`${BASE_API}list_movies.json?genre=animation`);
-
   //Search movies
   const $form = document.getElementById("form");
   const $home = document.getElementById("home");
@@ -95,18 +84,30 @@ const BASE_API = "https://yts.mx/api/v2/";
       const HTMLString = videoItemTemplate(movie, category);
       const movieElement = createTemplate(HTMLString);
       $container.append(movieElement);
+      const image = movieElement.querySelector('img');
+      image.addEventListener('load', (event) => {
+        event.target.classList.add('fadeIn')
+
+      })
       addEventClick(movieElement);
     });
   }
 
+
+  
+  
+  const { data: { movies: actionList } } = await getData(`${BASE_API}list_movies.json?genre=action`);
   const $actionContainer = document.getElementById("action");
   renderMoviesList(actionList, $actionContainer, "action");
-
+  
+  const { data: { movies: dramaList } } = await getData(`${BASE_API}list_movies.json?genre=drama`);
   const $dramaContainer = document.getElementById("drama");
   renderMoviesList(dramaList, $dramaContainer, "drama");
-
+  
+  const { data: { movies: animationList } } = await getData(`${BASE_API}list_movies.json?genre=animation`);
   const $animationContainer = document.getElementById("animation");
   renderMoviesList(animationList, $animationContainer, "animation");
+
 
   const $modal = document.getElementById("modal");
   const $overlay = document.getElementById("overlay");
